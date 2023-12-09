@@ -1,0 +1,120 @@
+definitions:
+  common.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+  common.QueryResult:
+    properties:
+      content:
+        type: string
+      state:
+        type: string
+    type: object
+  common.WorkflowObject:
+    properties:
+      run_id:
+        type: string
+      workflow_id:
+        type: string
+    type: object
+  dto.Cart:
+    properties:
+      item_requests:
+        items:
+          $ref: '#/definitions/dto.ItemRequest'
+        type: array
+      requested_by_user:
+        $ref: '#/definitions/dto.User'
+      total_amount:
+        type: number
+    type: object
+  dto.ItemRequest:
+    properties:
+      item_name:
+        type: string
+      item_no:
+        type: integer
+      price:
+        type: number
+      quantity:
+        description: default and max is always 1
+        type: integer
+    type: object
+  dto.User:
+    properties:
+      designation:
+        description: Engineer, IT-Manager, ProcurementManager, Director
+        type: string
+      manager_id:
+        description: manager UserID
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /procurement-approval:
+    post:
+      consumes:
+      - application/json
+      operationId: add-item-to-cart
+      parameters:
+      - description: Cart Items
+        in: body
+        name: cartInput
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Cart'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.WorkflowObject'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.HTTPError'
+      summary: Procurement Approval For Cart Items
+      tags:
+      - approval-process
+  /procurement-approval/{workflow_id}/{run_id}:
+    get:
+      consumes:
+      - application/json
+      operationId: get-procurement-workflow-status
+      parameters:
+      - description: Workflow ID
+        in: path
+        name: workflow_id
+        required: true
+        type: string
+      - description: Run ID
+        in: path
+        name: run_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.QueryResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.HTTPError'
+      summary: Get Procurement Approval Workflow state
+      tags:
+      - approval-process
+swagger: "2.0"
