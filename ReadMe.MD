@@ -10,6 +10,8 @@ Temporal based approval workflow
     - else approval is not required.
 * And Order gets initiated.
 
+### Demo
+[![image](common%2Fyoutube_video.png)](https://www.youtube.com/watch?v=ZUoTuXgahnE 'Approval Flow Demo')
 
 ### To Build and Run
 ```

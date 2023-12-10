@@ -12,6 +12,6 @@ import (
 func main() {
 	//cmd.Execute()
 	go approval_worker.ApprovalWorkflowWorkerStarter()
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 5)
 	cmd.WebAppStarter()
 }

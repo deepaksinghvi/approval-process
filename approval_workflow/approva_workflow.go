@@ -42,7 +42,7 @@ func ApprovalWorkflow(ctx workflow.Context, cartInput dto.Cart) error {
 	ctx = workflow.WithActivityOptions(ctx, options)
 
 	logger.Info("Approval Workflow started")
-	workflow.Sleep(ctx, time.Second*2) // approval_workflow can be put on sleep
+	workflow.Sleep(ctx, time.Second*10) // approval_workflow can be put on sleep
 
 	currentState = "cart_finalization_started"
 	err = workflow.ExecuteActivity(ctx, CartFinallization, cartInput).Get(ctx, &cartOutput)

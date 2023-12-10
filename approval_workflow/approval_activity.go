@@ -21,7 +21,7 @@ func CartFinallization(ctx context.Context, input dto.Cart, userID string) (dto.
 		RequestedByUser: common.UserMap[userID],
 		TotalAmount:     totalAmount,
 	}
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Second * 3)
 	logger.Info(fmt.Sprintf("Cart Ready for approval %v", cart))
 	return cart, nil
 }
@@ -32,11 +32,7 @@ func ManagerApprovalActivity(ctx context.Context, cart dto.CartLocked, manager d
 		Status:       "APPROVED",
 		ApproverName: manager.UserName,
 	}
-	if manager.Designation == common.ItManager.Designation {
-		time.Sleep(time.Second * 1)
-	} else {
-		time.Sleep(time.Second * 2)
-	}
+	time.Sleep(time.Second * 3)
 
 	cart.ManagerApproval = append(cart.ManagerApproval, approval)
 	logger.Info(fmt.Sprintf("ManagerApprovalActivity Process completed %v", cart))
@@ -50,7 +46,7 @@ func ProcurementManagerApprovalActivity(ctx context.Context, cart dto.CartLocked
 		Status:       "APPROVED",
 		ApproverName: procurementManager.UserName,
 	}
-	time.Sleep(time.Millisecond * 1000)
+	time.Sleep(time.Second * 3)
 	cart.ManagerApproval = append(cart.ManagerApproval, approval)
 	logger.Info(fmt.Sprintf("ProcurementManagerApprovalActivity Process completed %v", cart))
 	return cart, nil
@@ -60,7 +56,7 @@ func OrderInitiatedActivity(ctx context.Context, cart dto.CartLocked) (dto.CartL
 	logger := activity.GetLogger(ctx)
 	logger.Info("OrderInitiatedActivity Process Initiated")
 	cart.OrderInitiated = "STARTED"
-	time.Sleep(time.Millisecond * 2500)
+	time.Sleep(time.Second * 3)
 	logger.Info(fmt.Sprintf("OrderInitiatedActivity Process completed %v", cart))
 	return cart, nil
 }
