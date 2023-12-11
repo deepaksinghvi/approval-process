@@ -42,6 +42,7 @@ var UserMap = map[string]dto.User{
 	engineer1.UserID:          engineer1,
 	engineer2.UserID:          engineer1,
 	procurementManager.UserID: procurementManager,
+	ItLead.UserID:             ItLead,
 	ItManager.UserID:          ItManager,
 	director.UserID:           director,
 }
@@ -53,11 +54,11 @@ var director = dto.User{
 	ManagerID:   "",
 }
 
-var itLead = dto.User{
+var ItLead = dto.User{
 	UserID:      "itl1",
 	UserName:    "ITLead1",
 	Designation: "IT-Lead",
-	ManagerID:   "d1",
+	ManagerID:   "itm1",
 }
 
 var ItManager = dto.User{
@@ -85,7 +86,7 @@ var engineer1 = dto.User{
 	UserID:      "user1",
 	UserName:    "User1",
 	Designation: "Engineer",
-	ManagerID:   "itm1",
+	ManagerID:   "itl1",
 }
 
 type HTTPError struct {

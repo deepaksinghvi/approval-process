@@ -25,9 +25,10 @@ func ApprovalWorkflowWorkerStarter() {
 	// This approval_worker hosts both Workflow and Activity functions.
 	w.RegisterWorkflowWithOptions(approval_workflow.ApprovalWorkflow, workflow.RegisterOptions{Name: "ApprovalWorkflow"})
 	w.RegisterActivityWithOptions(approval_workflow.CartFinallization, activity.RegisterOptions{Name: "CartFinallization"})
-	w.RegisterActivityWithOptions(approval_workflow.ManagerApprovalActivity, activity.RegisterOptions{Name: "ManagerApprovalActivity"})
-	w.RegisterActivityWithOptions(approval_workflow.ProcurementManagerApprovalActivity, activity.RegisterOptions{Name: "ProcurementManagerApprovalActivity"})
-	w.RegisterActivityWithOptions(approval_workflow.OrderInitiatedActivity, activity.RegisterOptions{Name: "OrderInitiatedActivity"})
+	w.RegisterActivityWithOptions(approval_workflow.ManagerApproval, activity.RegisterOptions{Name: "ManagerApproval"})
+	w.RegisterActivityWithOptions(approval_workflow.ITLeadApproval, activity.RegisterOptions{Name: "ITLeadApproval"})
+	w.RegisterActivityWithOptions(approval_workflow.ProcurementManagerApproval, activity.RegisterOptions{Name: "ProcurementManagerApproval"})
+	w.RegisterActivityWithOptions(approval_workflow.OrderInitiation, activity.RegisterOptions{Name: "OrderInitiation"})
 
 	// Start listening to the Task Queue.
 	err = w.Run(worker.InterruptCh())

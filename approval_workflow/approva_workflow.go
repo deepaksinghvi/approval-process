@@ -54,15 +54,15 @@ func ApprovalWorkflow(ctx workflow.Context, cartInput dto.Cart) error {
 	currentState = "manager_approval_started"
 	var futures []workflow.Future
 
-	managerLevel1Future := workflow.ExecuteActivity(ctx, ManagerApprovalActivity, cartOutput, common.UserMap["itl1"])
+	managerLevel1Future := workflow.ExecuteActivity(ctx, ITLeadApproval, cartOutput, common.UserMap["itl1"])
 	if err != nil {
-		logger.Error("ManagerApprovalActivity ITLead failed", err.Error())
+		logger.Error("ITLeadApproval ITLead failed", err.Error())
 		return err
 	}
 	futures = append(futures, managerLevel1Future)
-	managerLevel2Future := workflow.ExecuteActivity(ctx, ManagerApprovalActivity, cartOutput, common.UserMap["itm1"])
+	managerLevel2Future := workflow.ExecuteActivity(ctx, ManagerApproval, cartOutput, common.UserMap["itm1"])
 	if err != nil {
-		logger.Error("ManagerApprovalActivity ITManager failed", err.Error())
+		logger.Error("ManagerApproval ITManager failed", err.Error())
 		return err
 	}
 	futures = append(futures, managerLevel2Future)
@@ -72,26 +72,26 @@ func ApprovalWorkflow(ctx workflow.Context, cartInput dto.Cart) error {
 		logger.Error("Approval Workflow Manager Approval failed", err.Error())
 		return err
 	}
-
+	approvedResult := dto.CartLocked{}
 	if cartOutput.TotalAmount > 10000 {
 		currentState = "procurement_manager_approval_started"
-		err = workflow.ExecuteActivity(ctx, ProcurementManagerApprovalActivity, approvalResult).Get(ctx, &approvalResult)
+		err = workflow.ExecuteActivity(ctx, ProcurementManagerApproval, approvalResult, common.UserMap["pm1"]).Get(ctx, &approvedResult)
 		if err != nil {
-			logger.Error("ProcurementManagerApprovalActivity failed", err.Error())
+			logger.Error("ProcurementManagerApproval failed", err.Error())
 			return err
 		}
 	}
 	currentState = "approval_completed"
 
-	err = workflow.ExecuteActivity(ctx, OrderInitiatedActivity, approvalResult).Get(ctx, &approvalResult)
+	err = workflow.ExecuteActivity(ctx, OrderInitiation, approvedResult).Get(ctx, &approvedResult)
 	if err != nil {
-		logger.Error("OrderInitiatedActivity failed", err.Error())
+		logger.Error("OrderInitiation failed", err.Error())
 		return err
 	}
 
-	currentState = "order_initiation_" + strings.ToLower(approvalResult.OrderInitiated)
+	currentState = "order_initiation_" + strings.ToLower(approvedResult.OrderInitiated)
 
-	logger.Info(fmt.Sprintf("Workflow result %v", approvalResult))
+	logger.Info(fmt.Sprintf("Workflow result %v", approvedResult))
 	return nil
 }
 

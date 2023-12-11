@@ -3,7 +3,7 @@ Temporal based approval workflow
 
 
 ### About the Approval Workflow Example
-* Engineer raises the approval request.
+* Engineer raises the approval request once cart is ready. POST api has been used here to simulate the same.
 * Parallel approval gets raised for ITLead and IT Manager.
 * Once both the approval received and both are approved. 
     - if cart amount is more than 10000 then procurement manager has to approve.
@@ -11,7 +11,7 @@ Temporal based approval workflow
 * And Order gets initiated.
 
 ### Demo
-[![image](common%2Fyoutube_video.png)](https://www.youtube.com/watch?v=ZUoTuXgahnE 'Approval Flow Demo')
+[![image](common%2Fdemo_video.png)](https://youtu.be/lz4rbsD7A48 'Approval Flow Demo')
 
 ### To Build and Run
 ```
